@@ -6,9 +6,9 @@
     using Carter.SirenNegotiator;
     using Action = Carter.SirenNegotiator.Action;
 
-    public class ActorDocumentWriter : ISirenDocumentWriter<Actor>
+    public class ActorResponseGenerator : ISirenResponseGenerator
     {
-        public Siren Write(IEnumerable<Actor> data, Uri uri)
+        public Siren Write(IEnumerable<object> data, Uri uri)
         {
             var doc = new Siren
             {
@@ -17,7 +17,7 @@
                 properties = new { Count = data.Count() }
             };
 
-            foreach (var actor in data)
+            foreach (var actor in data as IEnumerable<Actor>)
             {
                 var entity = new Entity
                 {
@@ -48,13 +48,14 @@
             return doc;
         }
 
-        public Siren Write(Actor data, Uri uri)
+        public Siren Write(object data, Uri uri)
         {
+            var actor = data as Actor;
             return new Siren
             {
                 @class = new [] { nameof(Actor) },
                 properties = data,
-                links = new List<Link> { new Link { href = uri + "/" + data.Id, rel = new [] { "self" } } },
+                links = new List<Link> { new Link { href = uri + "/" + actor.Id, rel = new [] { "self" } } },
                 actions = new List<Action> (new []{
                     new Action
                     {
@@ -74,6 +75,12 @@
                     }
                 })
             };
+        }
+
+        public bool CanHandle(Type type)
+        {
+            var listType = typeof(IEnumerable<Actor>);
+            return type is Actor || listType.IsAssignableFrom(type);
         }
     }
 }

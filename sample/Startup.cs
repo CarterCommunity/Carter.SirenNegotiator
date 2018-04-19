@@ -10,7 +10,7 @@ namespace Carter.SirenNegotiator.Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IActorProvider, ActorProvider>();
-            services.AddScoped<ISirenDocumentWriter<Actor>, ActorDocumentWriter>();
+            services.AddScoped<ISirenResponseGenerator, ActorResponseGenerator>();
             services.AddScoped<IResponseNegotiator, SirenResponseNegotiator>();
             services.AddCarter();
         }

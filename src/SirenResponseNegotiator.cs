@@ -1,21 +1,17 @@
 ﻿namespace Carter.SirenNegotiator
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Net.Http.Headers;
     using Response;
 
     public class SirenResponseNegotiator : IResponseNegotiator
     {
-        private readonly IServiceProvider serviceProvider;
-
-        public SirenResponseNegotiator(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
-        
         public bool CanHandle(MediaTypeHeaderValue accept)
         {
             return IsExactMatch(accept.MediaType.ToString()) 
@@ -24,12 +20,11 @@
 
         public async Task Handle(HttpRequest req, HttpResponse res, object model, CancellationToken cancellationToken)
         {
-            var handlerType = typeof(ISirenDocumentWriter<>).MakeGenericType(model.GetType());
-            var docWriter = serviceProvider.GetService(handlerType);
-            
-            var sirenRes = docWriter.Write(model, new Uri(req.Path.ToString()));  // Hmmmm! Can't resolve the type properly
+            var responseGenerators = req.HttpContext.RequestServices.GetServices(typeof(ISirenResponseGenerator)) as IEnumerable<ISirenResponseGenerator>;
+            var sirenResponseGenerator = responseGenerators.First(x => x.CanHandle(model.GetType()));
+            var response = sirenResponseGenerator.Write(model, new Uri(req.Path.ToString()));
 
-            await res.AsJson(sirenRes);
+            await res.AsJson(response);
         }
         
         private bool IsExactMatch(string mediaType)
