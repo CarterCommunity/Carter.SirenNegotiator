@@ -1,8 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>Richard Tasker</Authors>
+    <Description>A library to extend Carter to handle the siren hypermedia media type.</Description>
+    <PackageTags>siren;hypermedia;carter;asp.net core;nancy;.net core;routing;</PackageTags>
+    <PackageProjectUrl>https://github.com/CarterCommunity/Carter.SirenNegotiator</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/CarterCommunity/Carter.SirenNegotiator/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/CarterCommunity/Media/raw/master/carterlogo.png</PackageIconUrl>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Carter" Version="3.6.0" />
+    <PackageReference Include="Carter" Version="3.6.1" />
   </ItemGroup>
 </Project>
