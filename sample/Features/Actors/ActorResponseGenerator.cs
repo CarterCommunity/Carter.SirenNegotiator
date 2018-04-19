@@ -1,4 +1,4 @@
-﻿namespace CarterSample.Features.Actors
+namespace CarterSample.Features.Actors
 {
     using System;
     using System.Collections.Generic;
@@ -8,16 +8,30 @@
 
     public class ActorResponseGenerator : ISirenResponseGenerator
     {
-        public Siren Write(IEnumerable<object> data, Uri uri)
+        public bool CanHandle(Type type)
+        {
+            var listType = typeof(IEnumerable<Actor>);
+            var classType = typeof(Actor);
+            return classType.IsAssignableFrom(type) || listType.IsAssignableFrom(type);
+        }
+
+        public Siren Generate(object data, Uri uri)
+        {
+            return data is IEnumerable<Actor> 
+                ? Generate((IEnumerable<Actor>) data, uri) 
+                : Generate((Actor) data, uri);
+        }
+
+        private Siren Generate(IEnumerable<Actor> actors, Uri uri)
         {
             var doc = new Siren
             {
                 @class = new [] { "collection" },
                 entities = new List<Entity> (),
-                properties = new { Count = data.Count() }
+                properties = new { Count = actors.Count() }
             };
 
-            foreach (var actor in data as IEnumerable<Actor>)
+            foreach (var actor in actors)
             {
                 var entity = new Entity
                 {
@@ -47,14 +61,13 @@
 
             return doc;
         }
-
-        public Siren Write(object data, Uri uri)
+        
+        private Siren Generate(Actor actor, Uri uri)
         {
-            var actor = data as Actor;
             return new Siren
             {
                 @class = new [] { nameof(Actor) },
-                properties = data,
+                properties = actor,
                 links = new List<Link> { new Link { href = uri + "/" + actor.Id, rel = new [] { "self" } } },
                 actions = new List<Action> (new []{
                     new Action
@@ -75,12 +88,6 @@
                     }
                 })
             };
-        }
-
-        public bool CanHandle(Type type)
-        {
-            var listType = typeof(IEnumerable<Actor>);
-            return type is Actor || listType.IsAssignableFrom(type);
         }
     }
 }
