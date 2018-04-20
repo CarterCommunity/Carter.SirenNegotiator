@@ -1,0 +1,20 @@
+language: csharp
+os: linux
+mono: none
+dotnet: 2.0.0
+dist: trusty
+
+jobs:
+  include:
+    - stage: Restore
+      script: 
+       - dotnet restore ./Carter.SirenNegotiator.sln
+    - stage: Build
+      script: 
+       - dotnet build --no-restore ./src/Carter.SirenNegotiator.csproj
+       - dotnet build --no-restore ./sample/Carter.SirenNegotiator.Sample.csproj
+    - stage: Publish
+      if: branch = master
+      script:
+       - dotnet pack -o ../nupkgs --no-build --no-restore ./src/Carter.SirenNegotiator.csproj
+       - dotnet nuget push ./src/nupkgs/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
