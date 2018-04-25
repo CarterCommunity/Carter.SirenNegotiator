@@ -1,5 +1,8 @@
-image: ubuntu
+image: Ubuntu
 version: '0.0.{build}'
+configuration: Release
+pull_requests:
+  do_not_increment_build_number: true
 
 dotnet_csproj:
   patch: true
@@ -25,3 +28,4 @@ dotnet_csproj:
     api_key:
       secure: %NUGET_API_KEY%
     artifact: ./nupkgs/*.nupkg
+    
