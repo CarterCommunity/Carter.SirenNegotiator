@@ -1,0 +1,25 @@
+image: Ubuntu
+version: '0.0.{build}'
+configuration: Release
+pull_requests:
+  do_not_increment_build_number: true
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+  
+build:
+  project: ./Carter.SirenNegotiator.sln
+  publish_nuget: true
+
+deploy:
+  provider: NuGet
+  on:
+    branch: master
+  api_key:
+    secure: sVEOMjXCoYQU0B6tbPn7p/tEMMWqHXp3t78YZqRNgEABqKoveA8xsD4M5gMcqfSF
