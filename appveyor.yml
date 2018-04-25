@@ -13,18 +13,13 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
   
-before_build:
-  - dotnet restore ./Carter.SirenNegotiator.sln 
-  
-build_script:
-  - dotnet build --no-restore ./src/Carter.SirenNegotiator.csproj
-  - dotnet build --no-restore ./sample/Carter.SirenNegotiator.Sample.csproj
-
-before_deploy:
-  - dotnet pack --no-build --no-restore ./src/Carter.SirenNegotiator.csproj    
+build:
+  project: ./Carter.SirenNegotiator.sln
+  publish_nuget: true
 
 deploy:
   provider: NuGet
+  on:
+    branch: master
   api_key:
     secure: sVEOMjXCoYQU0B6tbPn7p/tEMMWqHXp3t78YZqRNgEABqKoveA8xsD4M5gMcqfSF
-  artifact: .*\.nupkg
