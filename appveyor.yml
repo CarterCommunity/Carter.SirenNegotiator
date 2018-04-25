@@ -26,6 +26,6 @@ dotnet_csproj:
   deploy:
     provider: NuGet
     api_key:
-      secure: %NUGET_API_KEY%
+      secure: sVEOMjXCoYQU0B6tbPn7p/tEMMWqHXp3t78YZqRNgEABqKoveA8xsD4M5gMcqfSF
     artifact: ./nupkgs/*.nupkg
     
