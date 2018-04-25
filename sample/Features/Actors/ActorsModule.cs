@@ -1,6 +1,7 @@
 namespace CarterSample.Features.Actors
 {
     using System;
+    using System.Threading.Tasks;
     using Carter;
     using Carter.ModelBinding;
     using Carter.Request;
@@ -69,7 +70,7 @@ namespace CarterSample.Features.Actors
                 }
             });
             
-            Delete("/actors/{id:int}", async (req, res, routeData) =>
+            Delete("/actors/{id:int}", (req, res, routeData) =>
             {
                 try
                 {
@@ -82,6 +83,8 @@ namespace CarterSample.Features.Actors
                 {
                     res.StatusCode = 404;
                 }
+
+                return Task.CompletedTask;
             });
         }
     }

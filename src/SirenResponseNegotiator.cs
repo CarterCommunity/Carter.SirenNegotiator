@@ -1,4 +1,4 @@
-﻿namespace Carter.SirenNegotiator
+namespace Carter.SirenNegotiator
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Net.Http.Headers;
-    using Response;
+    using Newtonsoft.Json;
 
     public class SirenResponseNegotiator : IResponseNegotiator
     {
@@ -22,9 +22,11 @@
         {
             var responseGenerators = req.HttpContext.RequestServices.GetServices(typeof(ISirenResponseGenerator)) as IEnumerable<ISirenResponseGenerator>;
             var sirenResponseGenerator = responseGenerators.First(x => x.CanHandle(model.GetType()));
-            var response = sirenResponseGenerator.Write(model, new Uri(req.Path.ToString()));
+            var response = sirenResponseGenerator.Generate(model, new Uri($"{req.Scheme}://{req.Host}{req.Path}"));
 
-            await res.AsJson(response);
+            res.ContentType = "application/vnd.siren+json";
+            await res.WriteAsync(JsonConvert.SerializeObject(response,
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
         }
         
         private bool IsExactMatch(string mediaType)
