@@ -68,7 +68,7 @@ namespace CarterSample.Features.Actors
             {
                 @class = new [] { nameof(Actor) },
                 properties = actor,
-                links = new List<Link> { new Link { href = uri + "/" + actor.Id, rel = new [] { "self" } } },
+                links = new List<Link> { new Link { href = uri.ToString(), rel = new [] { "self" } } },
                 actions = new List<Action> (new []{
                     new Action
                     {
@@ -83,7 +83,7 @@ namespace CarterSample.Features.Actors
                     {
                         name = "delete-actor",
                         title = "Delete Actor",
-                        method = "PUT",
+                        method = "DELETE",
                         href = uri.ToString()
                     }
                 })
