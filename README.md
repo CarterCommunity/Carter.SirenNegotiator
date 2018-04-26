@@ -177,7 +177,7 @@ $ curl -H "Accept: application/vnd.siren+json" http://localhost:5000/actors/1
     {
       "name": "delete-actor",
       "title": "Delete Actor",
-      "method": "PUT",
+      "method": "DELETE",
       "href": "http://localhost:5000/actors/1"
     }
   ],
@@ -195,6 +195,7 @@ $ curl -H "Accept: application/vnd.siren+json" http://localhost:5000/actors/1
 ## Contributing
 
 Carter.SirenNegotiator is a community project. We invite your participation through issues and pull requests!
+
 <a href="https://join.slack.com/t/cartercommunity/shared_invite/enQtMzQwNjIwODcwMTMxLWQwMjk5NDFlYWI3Yzg5Y2M4ODNmOTkwMzA2YjkxNmE0YjI3YWU4MjU2ZjI2NmQwMmE4NjVlODBlM2RlMDI1ZmY"><img src="./slack.svg" width="140px"/></a>
 
 ## License
