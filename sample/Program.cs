@@ -1,19 +1,22 @@
-namespace Carter.SirenNegotiator.Sample
-{
-    using System.IO;
-    using Microsoft.AspNetCore.Hosting;
+using Carter.SirenNegotiator;
+using Carter;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Carter.SirenNegotiator.Sample.Features.Actors;
+using Carter.SirenNegotiator.Sample.Features.Home;
 
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var host = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel()
-                .UseStartup<Startup>()
-                .Build();
+var builder = WebApplication.CreateBuilder(args);
 
-            host.Run();
-        }
-    }
-}
+builder.Services.AddSingleton<IActorProvider, ActorProvider>();
+builder.Services.AddScoped<ISirenResponseGenerator, ActorResponseGenerator>();
+builder.Services.AddScoped<IResponseNegotiator, SirenResponseNegotiator>();
+builder.Services.AddCarter(configurator: c => {
+    c.WithModule<HomeModule>();
+    c.WithModule<ActorsModule>();
+});
+
+var app = builder.Build();
+
+app.MapCarter();
+
+app.Run();

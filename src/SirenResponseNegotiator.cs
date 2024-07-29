@@ -18,7 +18,7 @@ namespace Carter.SirenNegotiator
                    || IsPartialMatch(accept.SubType.ToString());
         }
 
-        public async Task Handle(HttpRequest req, HttpResponse res, object model, CancellationToken cancellationToken)
+        public async Task Handle<T>(HttpRequest req, HttpResponse res, T model, CancellationToken cancellationToken)
         {
             var responseGenerators = req.HttpContext.RequestServices.GetServices(typeof(ISirenResponseGenerator)) as IEnumerable<ISirenResponseGenerator>;
             var sirenResponseGenerator = responseGenerators.First(x => x.CanHandle(model.GetType()));
@@ -28,7 +28,7 @@ namespace Carter.SirenNegotiator
             await res.WriteAsync(JsonConvert.SerializeObject(response,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
         }
-        
+
         private bool IsExactMatch(string mediaType)
         {
             return mediaType.Contains("application/vnd.siren+json");

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Version>0.0.0</Version>
     <Authors>Richard Tasker</Authors>
     <Description>A library to extend Carter to handle the siren hypermedia media type.</Description>
@@ -11,6 +11,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dependances\Carter\src\Carter.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dependances\Carter\src\Carter\Carter.csproj" />
   </ItemGroup>
 </Project>
