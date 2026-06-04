@@ -7,14 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carter.SirenNegotiator", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carter.SirenNegotiator.Sample", "sample\Carter.SirenNegotiator.Sample.csproj", "{7284EA4C-65F1-40B6-9444-074014D794CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carter", "dependances\Carter\src\Carter\Carter.csproj", "{905D58FC-4E5F-431F-875D-ECDD3B4620A1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carter.Analyzers", "dependances\Carter\src\Carter.Analyzers\Carter.Analyzers.csproj", "{4316FB9B-92B1-477C-AE27-72CA44103EDB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarterSample", "dependances\Carter\samples\CarterSample\CarterSample.csproj", "{B0B4A850-BE1E-4334-8A27-7B4C235DC781}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidatorOnlyProject", "dependances\Carter\samples\ValidatorOnlyProject\ValidatorOnlyProject.csproj", "{FEB0F9D7-F8E8-41D8-BD81-1722D31A5DB4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
