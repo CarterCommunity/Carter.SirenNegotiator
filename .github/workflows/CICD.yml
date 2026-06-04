@@ -1,0 +1,52 @@
+name: build
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v5
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.*
+      
+      - name: Build
+        run: dotnet build Carter.SirenNegotiator.slnx --configuration Release --nologo
+        
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+       
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.*
+          
+      - name: Get version from tag
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        
+      - name: pack
+        run: dotnet pack ./src/Carter.SirenNegotiator.csproj -c Release -p:PackageVersion=$VERSION
+        
+      - name: publish
+        run: dotnet nuget push ./src/bin/Release/Carter.SirenNegotiator.$VERSION.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
