@@ -1,11 +1,25 @@
-namespace Carter.SirenNegotiator.Sample.Features.Actors;
-
 using System.Collections.Generic;
 using System.Linq;
 
+namespace Carter.SirenNegotiator.Sample.Features.Actors;
+
 public class ActorProvider : IActorProvider
 {
-    private static IList<Actor> database = new[] { new Actor { Name = "Brad Pitt", Id = 1, Age = 51 }, new Actor { Name = "Jason Statham", Id = 2, Age = 43 } };
+    private static IList<Actor> database =
+    [
+        new()
+        {
+            Id = 1,
+            Name = "Brad Pitt",
+            Age = 51
+        },
+        new()
+        {
+            Id = 2,
+            Name = "Jason Statham",
+            Age = 43
+        }
+    ];
 
     public IEnumerable<Actor> Get()
     {

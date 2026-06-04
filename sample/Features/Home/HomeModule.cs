@@ -1,22 +1,12 @@
-﻿namespace Carter.SirenNegotiator.Sample.Features.Home;
-
-using Carter;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System;
 
-public class HomeModule : CarterModule
+namespace Carter.SirenNegotiator.Sample.Features.Home;
+
+public class HomeModule : ICarterModule
 {
-    public HomeModule()
-    {
-        After = async ctx =>
-        {
-            await Console.Out.WriteLineAsync("Catch you later!");
-        };
-    }
-
-    public override void AddRoutes(IEndpointRouteBuilder app)
+    public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet("/", async (HttpRequest req, HttpResponse res) =>
         {

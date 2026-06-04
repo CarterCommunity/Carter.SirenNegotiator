@@ -1,10 +1,8 @@
-namespace Carter.SirenNegotiator.Sample.Features.Actors;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carter.SirenNegotiator;
-using Action = Carter.SirenNegotiator.Action;
+
+namespace Carter.SirenNegotiator.Sample.Features.Actors;
 
 public class ActorResponseGenerator : ISirenResponseGenerator
 {
@@ -17,47 +15,51 @@ public class ActorResponseGenerator : ISirenResponseGenerator
 
     public Siren Generate(object data, Uri uri)
     {
-        return data is IEnumerable<Actor>
-            ? Generate((IEnumerable<Actor>)data, uri)
+        return data is IEnumerable<Actor> actors
+            ? Generate(actors, uri)
             : Generate((Actor)data, uri);
     }
 
     private Siren Generate(IEnumerable<Actor> actors, Uri uri)
     {
+        var actorArray = actors as Actor[] ?? actors.ToArray();
         var doc = new Siren
         {
-            @class = new[] { "collection" },
+            @class = ["collection"],
             entities = new List<Entity>(),
-            properties = new { Count = actors.Count() }
+            properties = new { Count = actorArray.Count() }
         };
 
-        foreach (var actor in actors)
+        foreach (var actor in actorArray)
         {
             var entity = new Entity
             {
-                @class = new[] { nameof(Actor) },
-                rel = new[] { "item" },
+                @class = [nameof(Actor)],
+                rel = ["item"],
                 properties = actor,
-                links = new List<Link> { new Link { href = uri + "/" + actor.Id, rel = new[] { "self" } } }
+                links = [new Link { href = uri + "/" + actor.Id, rel = ["self"] }]
             };
 
             doc.entities.Add(entity);
         }
 
-        doc.actions = new List<Action>(new[]{
+        doc.actions = new List<Action>([
+            new Action
+            {
+                name = "create-actor",
+                title = "Create Actor",
+                method = "POST",
+                href = uri.ToString(),
+                type = "application/json",
+                fields =
+                [
+                    new Field { name = "name", type = "text" },
+                    new Field { name = "age", type = "number" }
+                ]
+            }
+        ]);
 
-                new Action
-                {
-                    name = "create-actor",
-                    title = "Create Actor",
-                    method = "POST",
-                    href = uri.ToString(),
-                    type = "application/json",
-                    fields = new List<Field>(new[] {new Field {name = "name", type = "text"}, new Field{name = "age", type = "number"}})
-                }
-            });
-
-        doc.links = new List<Link> { new Link { href = uri.ToString(), rel = new[] { "self" } } };
+        doc.links = [new Link { href = uri.ToString(), rel = ["self"] }];
 
         return doc;
     }
@@ -66,27 +68,32 @@ public class ActorResponseGenerator : ISirenResponseGenerator
     {
         return new Siren
         {
-            @class = new[] { nameof(Actor) },
+            @class = [nameof(Actor)],
             properties = actor,
-            links = new List<Link> { new Link { href = uri.ToString(), rel = new[] { "self" } } },
-            actions = new List<Action>(new[]{
-                    new Action
-                    {
-                        name = "update-actor",
-                        title = "Update Actor",
-                        method = "PUT",
-                        href = uri.ToString(),
-                        type = "application/json",
-                        fields = new List<Field>(new[] {new Field {name = "name", type = "text"}, new Field{name = "age", type = "number"}})
-                    },
-                    new Action
-                    {
-                        name = "delete-actor",
-                        title = "Delete Actor",
-                        method = "DELETE",
-                        href = uri.ToString()
-                    }
-                })
+            links = [new Link { href = uri.ToString(), rel = ["self"] }],
+            actions =
+            [
+                new Action
+                {
+                    name = "update-actor",
+                    title = "Update Actor",
+                    method = "PUT",
+                    href = uri.ToString(),
+                    type = "application/json",
+                    fields =
+                    [
+                        new Field { name = "name", type = "text" }, 
+                        new Field { name = "age", type = "number" }
+                    ]
+                },
+                new Action
+                {
+                    name = "delete-actor",
+                    title = "Delete Actor",
+                    method = "DELETE",
+                    href = uri.ToString()
+                }
+            ]
         };
     }
 }
